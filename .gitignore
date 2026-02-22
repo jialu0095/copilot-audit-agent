@@ -1,0 +1,80 @@
+############################################
+# Python
+############################################
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python build artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Packaging
+pip-wheel-metadata/
+.wheels/
+
+############################################
+# Logs / Runtime
+############################################
+*.log
+*.tmp
+
+############################################
+# CLI Output / Generated Files
+############################################
+# Generated audit reports (Markdown)
+audit-report*.md
+*.audit.md
+
+
+############################################
+# GitHub Copilot / CLI
+############################################
+# Copilot CLI session state / cache
+.copilot/
+copilot-session-state/
+.copilot-workspace/
+
+############################################
+# OS-specific
+############################################
+# Windows
+Thumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+############################################
+# IDEs / Editors
+############################################
+# VS Code
+.vscode/
+!.vscode/extensions.json
+
+# PyCharm / IntelliJ
+.idea/
+
+# Vim
+*.swp
+*.swo
+
+############################################
+# Jupyter / Experiments
+############################################
+.ipynb_checkpoints/
+*.ipynb
+
+############################################
+# Environment / Secrets
+############################################
+.env
+.env.*
+!.env.example
