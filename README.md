@@ -257,4 +257,4 @@ Main coroutine (generate_audit_report)
 End
 ```
 
-![](C:\Users\YY545FE\AppData\Roaming\marktext\images\2026-02-23-10-54-19-image.png)
+![Audit Flow](assets/async_flow.png)
