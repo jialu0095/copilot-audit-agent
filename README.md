@@ -206,8 +206,7 @@ asyncio.run(main())
 * The SDK relies entirely on the GitHub Copilot CLI
 * No API keys or direct model access are required
 * Authentication and subscription are managed by the CLI
-
------------------    
+  
 
 ## File Architecture
 
