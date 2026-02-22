@@ -1,6 +1,5 @@
 ## Copilot Audit Agent Usage Guide
 
-
 ## Attribution
 
 This project is **derived from**  
@@ -9,11 +8,11 @@ This project is **derived from**
 Original project by **Charles Kuncheria**, licensed under the MIT License.
 
 This repository contains a **significantly modified and rewritten version**:
+
 - Rewritten in **Python**
 - Focused on **governance & audit report generation**
 - Uses **GitHub Copilot Python SDK**
 - Different CLI interface and execution model
-
 
 ---
 
@@ -212,10 +211,6 @@ asyncio.run(main())
 
 ## File Architecture
 
----
-
-## Project Structure
-
 ```bash
 .
 
@@ -240,6 +235,7 @@ asyncio.run(main())
    └─ audit_prompt.py     # Audit prompt template (Markdown structure & rules)
 ```
 
+## Async logic
 
 ```bash
 Main coroutine (generate_audit_report)
@@ -260,3 +256,5 @@ Main coroutine (generate_audit_report)
   v
 End
 ```
+
+![](C:\Users\YY545FE\AppData\Roaming\marktext\images\2026-02-23-10-54-19-image.png)
