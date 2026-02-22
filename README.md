@@ -91,7 +91,7 @@ python -m pip install -e .
 ### Basic Usage
 
 ```bash
-audit --input .\<inputfile>.<pdf/doc/xlsx/img> --output <outputfile>.md --verbose
+audit --input <inputfile>.<filetype> --output <outputfile>.md --verbose
 ```
 
 ***
