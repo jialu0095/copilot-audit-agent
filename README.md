@@ -91,7 +91,7 @@ python -m pip install -e .
 ### Basic Usage
 
 ```bash
-Shellaudit --input .\AIA_Dec23.pdf --output audit-report.md --verbose
+audit --input .\<inputfile>.<pdf/doc/xlsx/img> --output <outputfile>.md --verbose
 ```
 
 ***
