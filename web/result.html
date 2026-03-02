@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Generation Result</title>
+</head>
+<body>
+  <h1>Generation Result</h1>
+
+  {% if not ok %}
+    <h2 style="color:#dc2626;">Failed</h2>
+    <p>{{ error }}</p>
+
+    {% if errors %}
+      <h3>Error details</h3>
+      <pre>
+{% for e in errors %}
+{{ e }}
+
+{% endfor %}
+      </pre>
+    {% endif %}
+
+    <p><a href="/">Back</a></p>
+
+  {% else %}
+    <h2 style="color:#16a34a;">Success ✅</h2>
+
+    <p>
+      The combined audit report has been generated:
+      <strong>report.md</strong>
+    </p>
+
+    <p>
+      <a href="{{ download_url }}">Download report.md</a>
+    </p>
+
+    {% if errors %}
+      <h3>Some files failed and were skipped</h3>
+      <pre>
+{% for e in errors %}
+{{ e }}
+
+{% endfor %}
+      </pre>
+    {% endif %}
+
+    <p><a href="/">Generate another report</a></p>
+  {% endif %}
+</body>
+</html>
