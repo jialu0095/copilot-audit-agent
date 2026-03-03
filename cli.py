@@ -6,6 +6,9 @@ from rich.console import Console
 
 from agent import generate_audit_report, GenerateAuditOptions
 
+import os
+
+
 console = Console()  # initialize Rich console for pretty printing
 app = typer.Typer(add_completion=False)  # initialize Typer app for CLI, no cmd completion
 
@@ -32,5 +35,11 @@ def run(
 
 
 def main() -> None:
+    os.environ.setdefault("PYTHONIOENCODING", "utf-8")
+    os.environ.setdefault("PYTHONUTF8", "1")
     # package entry point: Typer will handle command-line parsing and invoke the `run` function
+    app()
+
+    
+if __name__ == "__main__":
     app()

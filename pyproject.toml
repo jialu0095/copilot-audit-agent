@@ -12,7 +12,8 @@ dependencies = [
   "pypdf",
   "typer",
   "rich",
-  "openpyxl"
+  "openpyxl",
+  "flask"
 ]
 
 [project.scripts]

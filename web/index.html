@@ -3,12 +3,39 @@
 <head>
   <meta charset="utf-8">
   <title>Governance Audit Generator</title>
+
+  <style>
+    /* Simple loading styles */
+    #running {
+      display: none;
+      margin-top: 30px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      background: #fafafa;
+    }
+
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 4px solid #ddd;
+      border-top: 4px solid #333;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-top: 10px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
 </head>
+
 <body>
 
   <h1>Governance Audit Generator</h1>
 
-  <form action="/generate" method="post" enctype="multipart/form-data">
+  <!-- Add an id to the form -->
+  <form id="genForm" action="/generate" method="post" enctype="multipart/form-data">
 
     <p>
       <label>Select files (multiple allowed)</label><br>
@@ -30,6 +57,26 @@
     <button type="submit">Generate report.md</button>
 
   </form>
+
+  <!-- Running indicator -->
+  <div id="running">
+    <h3>⏳ Generating Reports…</h3>
+    <p>Please don't leave, this might take a while</p>
+    <div class="spinner"></div>
+  </div>
+
+  <!-- JS: switch UI on submit -->
+  <script>
+    const form = document.getElementById("genForm");
+    const running = document.getElementById("running");
+
+    form.addEventListener("submit", () => {
+      // Hide the form
+      form.style.display = "none";
+      // Show the running indicator
+      running.style.display = "block";
+    });
+  </script>
 
 </body>
 </html>
