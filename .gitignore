@@ -86,3 +86,12 @@ runs/
 *.pdf
 *.docx
 *.xlsx
+
+############################################
+# Prompt Templates & Sensitive Data
+############################################
+# User-created prompt templates (sensitive)
+runs/prompt_templates.json
+# Temporary prompt files (not persisted)
+runs/tmp/prompt.txt
+runs/tmp/*/prompt.txt

@@ -1,82 +1,116 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Governance Audit Generator</title>
-
-  <style>
-    /* Simple loading styles */
-    #running {
-      display: none;
-      margin-top: 30px;
-      padding: 20px;
-      border: 1px solid #ddd;
-      background: #fafafa;
-    }
-
-    .spinner {
-      width: 32px;
-      height: 32px;
-      border: 4px solid #ddd;
-      border-top: 4px solid #333;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-top: 10px;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Governance Audit Generator</title>
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 
 <body>
 
-  <h1>Governance Audit Generator</h1>
-
-  <!-- Add an id to the form -->
-  <form id="genForm" action="/generate" method="post" enctype="multipart/form-data">
-
-    <p>
-      <label>Select files (multiple allowed)</label><br>
-      <input type="file" name="files" multiple required>
+  <div class="container">
+    <h1>🏛️ Governance Audit Generator</h1>
+    <p class="subtitle">
+      Upload one or more documents (PDF, Word, Excel, images) and generate a comprehensive governance audit report. 
+      All files are analyzed together to create a unified assessment.
     </p>
 
-    <p>
-      <label>Model</label><br>
-      <input type="text" name="model" value="gpt-5">
-    </p>
+    <!-- Form -->
+    <form id="genForm" action="/generate" method="post" enctype="multipart/form-data">
 
-    <p>
-      <label>
-        <input type="checkbox" name="verbose">
-        Verbose
-      </label>
-    </p>
+      <!-- File upload section -->
+      <div class="form-section">
+        <label>Step 1: Select Documents</label>
+        <input 
+          type="file" 
+          id="fileInput"
+          name="files"
+          multiple
+          required
+          accept=".pdf,.docx,.xlsx,.xls,.png,.jpg,.jpeg,.txt"
+          style="width: 100%; padding: 10px; border: 2px dashed #d1d5db; border-radius: 6px; cursor: pointer;"
+        >
+        <p class="help-text">Click to upload new files (won't replace existing)</p>
+        <div id="fileList" style="display: none; margin-top: 12px; padding: 10px; background: #f3f4f6; border-radius: 4px; font-size: 13px; max-height: 250px; overflow-y: auto;"></div>
+        <p class="help-text" style="margin-top: 10px;">✓ Multiple files supported • 50 MB max per upload</p>
+      </div>
 
-    <button type="submit">Generate report.md</button>
+      <!-- Model section -->
+      <div class="form-section">
+        <label for="model">Step 2: Choose Model</label>
+        <select name="model" id="model">
+          <option value="gpt-5">GPT-5 (Default, Fast)</option>
+          <option value="claude-sonnet-4.5">Claude Sonnet 4.5 (Detailed)</option>
+          <option value="gpt-4-turbo">GPT-4 Turbo</option>
+        </select>
+        <p class="help-text">Select the AI model to use for analysis</p>
+      </div>
 
-  </form>
+      <!-- Prompt section -->
+      <div class="form-section">
+        <label for="promptTemplate">Step 3: Audit Prompt</label>
+        <select name="prompt_template_id" id="promptTemplate">
+          <option value="default">📋 Default Audit Prompt</option>
+        </select>
+        <div class="prompt-controls">
+          <button type="button" class="btn-secondary" id="editPromptBtn">✏️ Edit Prompt</button>
+        </div>
+        <p class="help-text">Select a template or create a custom prompt for this audit run</p>
+        <input type="hidden" name="prompt_text" id="promptText">
+      </div>
 
-  <!-- Running indicator -->
-  <div id="running">
-    <h3>⏳ Generating Reports…</h3>
-    <p>Please don't leave, this might take a while</p>
-    <div class="spinner"></div>
+      <!-- Options section -->
+      <div class="form-section">
+        <label>Step 4: Options</label>
+        <div class="checkbox-wrapper">
+          <input type="checkbox" name="verbose" id="verbose">
+          <label for="verbose" class="checkbox-label">Enable verbose logging (shows processing details)</label>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="button-group">
+        <button type="submit" id="submitBtn">Generate Report</button>
+        <button type="reset">Clear</button>
+      </div>
+
+    </form>
+
+    <!-- Prompt Modal -->
+    <div id="promptModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Edit Audit Prompt</h2>
+          <button type="button" class="modal-close" id="modalClose">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="modalPromptText">Audit Prompt</label>
+            <textarea id="modalPromptText" placeholder="Enter or edit the audit prompt..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary-modal" id="modalCancel">Cancel</button>
+          <button type="button" class="btn-primary-modal" id="modalUsePrompt">Use Prompt</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Running indicator -->
+    <div id="running">
+      <div class="running-message">⏳ Generating Your Report</div>
+      <div class="spinner"></div>
+      <p class="running-submessage">Analyzing files and synthesizing findings...</p>
+      <p class="running-submessage" style="margin-top: 16px; color: #999;">This may take a minute or two. Please don't close this page.</p>
+    </div>
   </div>
 
-  <!-- JS: switch UI on submit -->
-  <script>
-    const form = document.getElementById("genForm");
-    const running = document.getElementById("running");
-
-    form.addEventListener("submit", () => {
-      // Hide the form
-      form.style.display = "none";
-      // Show the running indicator
-      running.style.display = "block";
-    });
-  </script>
+  <!-- JavaScript -->
+  <script src="/static/app.js"></script>
 
 </body>
 </html>
